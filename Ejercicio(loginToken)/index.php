@@ -14,13 +14,19 @@
 
     $app = new \Slim\App(["settings" => $config]);
 
-
+    $app->group('/login', function () {   
+     
+       $this->post('/', \usuarioApi::class . ':ExisteUsuario');
+      
+          
+            
+});
     $app->group('/usuario', function () {   
         $this->get('/', usuarioApi::class . ':TraerTodos')->add(\MWparaCORS::class . ':HabilitarCORSTodos');;
         $this->get('/{id}', \usuarioApi::class . ':traerUno')->add(\MWparaCORS::class . ':HabilitarCORSTodos');;
         $this->delete('/', \usuarioApi::class . ':BorrarUno');
         $this->put('/', \usuarioApi::class . ':ModificarUno');
-       $this->post('/', \usuarioApi::class . ':ExisteUsuario');
+       $this->post('/', \usuarioApi::class . ':CargarUno');
       
           
             

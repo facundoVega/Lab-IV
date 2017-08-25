@@ -24,11 +24,12 @@ class usuarioApi extends usuario implements IApiUsable
         //var_dump($ArrayDeParametros);
         $nombre= $ArrayDeParametros['nombre'];
         $tipo= $ArrayDeParametros['tipo'];
-      
+		$pass =$ArrayDeParametros['pass'];
         
         $miuser = new usuario();
 		$miuser->nombre=$nombre;
 		$miuser->tipo=$tipo;
+		$miuser->password=$pass;
      
         
         $miuser->InsertarElUsuarioParametros();

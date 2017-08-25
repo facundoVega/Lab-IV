@@ -83,10 +83,11 @@ class usuario
 	 public function InsertarElUsuarioParametros()
 	 {
 				$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-				$consulta =$objetoAccesoDato->RetornarConsulta("INSERT into usuarios (nombre,tipo, estado)values(:nombre,:tipo, :estado)");
+				$consulta =$objetoAccesoDato->RetornarConsulta("INSERT into usuarios (nombre,tipo, estado,password)values(:nombre,:tipo, :estado,:pass)");
 				$consulta->bindValue(':nombre',$this->nombre, PDO::PARAM_INT);
 				$consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
 				$consulta->bindValue(':estado', 'HABILITADO', PDO::PARAM_STR);
+				$consulta->bindValue(':pass',$this->password, PDO::PARAM_STR);
 
 				$consulta->execute();		
 				return $objetoAccesoDato->RetornarUltimoIdInsertado();
