@@ -30,15 +30,20 @@ class usuarioApi extends usuario implements IApiUsable
      
         
         $miuser->InsertarElUsuarioParametros();
-        //$archivos = $request->getUploadedFiles();
-        //$destino="./fotos/";
-        //var_dump($archivos);
-        //var_dump($archivos['foto']);
-       // $nombreAnterior=$archivos['foto']->getClientFilename();
-        //$extension= explode(".", $nombreAnterior)  ;
-        //var_dump($nombreAnterior);
-       // $extension=array_reverse($extension);
-        //$archivos['foto']->moveTo($destino.$titulo.".".$extension[0]);
+        $archivos = $request->getUploadedFiles();
+		$destino="fotos/";
+		
+       // var_dump($archivos);
+       //var_dump($archivos['foto']);
+        $nombreAnterior=$archivos['foto']->getClientFilename();
+        $extension= explode(".", $nombreAnterior)  ;
+     
+	   $extension=array_reverse($extension);
+		$titulo =date("Ymd_His"); 
+		//$destino=$destino.$titulo.".".$extension[0];
+		//var_dump($destino);
+		//move_uploaded_file($archivos['foto']->getClientFilename(), $destino);
+		$archivos['foto']->moveTo($destino.$titulo.".".$extension[0]);
         $response->getBody()->write("se guardo el user");
 		return $response;
 		
