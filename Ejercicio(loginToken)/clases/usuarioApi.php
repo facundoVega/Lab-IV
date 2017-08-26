@@ -13,11 +13,12 @@ class usuarioApi extends usuario implements IApiUsable
     	return $newResponse;
     }
      public function TraerTodos($request, $response, $args) {
-      	$todosLosUsuarios=usuario::TraerTodoLosUsuarios();
+      $todosLosUsuarios=usuario::TraerTodoLosUsuarios();
 		 $response = $response->withJson($todosLosUsuarios, 200);  
 
 		 $response->getBody()->write("traer todos");
-    	 return $response;
+		 return $response;
+
     }
       public function CargarUno($request, $response, $args) {
      	$ArrayDeParametros = $request->getParsedBody();
@@ -60,8 +61,9 @@ class usuarioApi extends usuario implements IApiUsable
 		if($usuarioBuscado!=null)
 		{
 			$token=AutentificadorJWT::CrearToken($usuarioBuscado);
+
 			$response->getBody()->write($token);
-			return $response;
+			
 		}
 		else
 		{
@@ -69,7 +71,7 @@ class usuarioApi extends usuario implements IApiUsable
 			return $response;
 		}
 
-		$response->getBody()->write($nombre." "." "." ".  $pass);
+		
 		return $response;
 
 	}
@@ -103,7 +105,9 @@ class usuarioApi extends usuario implements IApiUsable
 	    $miuser->id=$ArrayDeParametros['id'];
 	    $miuser->nombre=$ArrayDeParametros['nombre'];
 	    $miuser->tipo=$ArrayDeParametros['tipo'];
+	   $miuser->pass=$ArrayDeParametros['pass'];
 	   
+
 	   	$resultado =$miuser->ModificarUsuarioParametros();
 	   	$objDelaRespuesta= new stdclass();
 		//var_dump($resultado);

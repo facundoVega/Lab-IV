@@ -18,7 +18,7 @@ class AutentificadorJWT
         */
         $payload = array(
         	'iat'=>$ahora,
-            'exp' => $ahora + (60*60),
+            'exp' => $ahora + (600*60),
             'aud' => self::Aud(),
             'data' => $datos,
             'app'=> "API REST CD 2017"
@@ -27,6 +27,7 @@ class AutentificadorJWT
         return JWT::encode($payload, self::$claveSecreta);
     }
     
+
     public static function VerificarToken($token)
     {
        

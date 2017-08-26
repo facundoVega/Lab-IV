@@ -16,10 +16,14 @@ class MWparaAutentificar
    * @apiExample Como usarlo:
    *    ->add(\MWparaAutenticar::class . ':VerificarUsuario')
    */
+
+
+
 	public function VerificarUsuario($request, $response, $next) {
          
 		$objDelaRespuesta= new stdclass();
 		$objDelaRespuesta->respuesta="";
+			$objDelaRespuesta->tokenVacio=true;
 	   
 		if($request->isGet())
 		{
@@ -33,9 +37,20 @@ class MWparaAutentificar
 			//$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'profe', 'alias' => "PinkBoy");
 			
 			//perfil=Administrador(todos)
-			$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
+			///TOKEN FICTICIO*$datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
+			$objDelaRespuesta->esValido=true; 
+			$headersArray = $request->getHeader("Authorization");
 			
-			$token= AutentificadorJWT::CrearToken($datos);
+			if(empty($headersArray[0])){
+				
+					$objDelaRespuesta->esValido=false; 
+					
+			}else{
+			   $token = $headersArray[0];
+			   $objDelaRespuesta->tokenVacio= false;
+			 
+			}
+			//$token= AutentificadorJWT::CrearToken($datos);
 			//token vencido
 			//$token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTc1Njc5NjUsImV4cCI6MTQ5NzU2NDM2NSwiYXVkIjoiNGQ5ODU5ZGU4MjY4N2Y0YzEyMDg5NzY5MzQ2OGFhNzkyYTYxNTMwYSIsImRhdGEiOnsidXN1YXJpbyI6InJvZ2VsaW9AYWd1YS5jb20iLCJwZXJmaWwiOiJBZG1pbmlzdHJhZG9yIiwiYWxpYXMiOiJQaW5rQm95In0sImFwcCI6IkFQSSBSRVNUIENEIDIwMTcifQ.GSpkrzIp2UbJWNfC1brUF_O4h8PyqykmW18vte1bhMw";
 			//token error
@@ -47,7 +62,7 @@ class MWparaAutentificar
 				$token=$arrayConToken[0];			
 			*/
 			//var_dump($token);
-			$objDelaRespuesta->esValido=true; 
+			//$objDelaRespuesta->esValido=true; 
 			try 
 			{
 				//$token="";
@@ -69,9 +84,9 @@ class MWparaAutentificar
 				else
 				{
 					$payload=AutentificadorJWT::ObtenerData($token);
-					//var_dump($payload);
+				//var_dump($payload);
 					// DELETE,PUT y DELETE sirve para todos los logeados y admin
-					if($payload->perfil=="Administrador")
+					if($payload->tipo=="administrador")
 					{
 						$response = $next($request, $response);
 					}		           	
@@ -83,9 +98,14 @@ class MWparaAutentificar
 			}    
 			else
 			{
-				//   $response->getBody()->write('<p>no tenes habilitado el ingreso</p>');
+				//   $response->getBody()->write('
+				//<p>no tenes habilitado el ingreso</p>');
 				$objDelaRespuesta->respuesta="Solo usuarios registrados";
-				$objDelaRespuesta->elToken=$token;
+
+				if(!$objDelaRespuesta->tokenVacio)
+				{
+					$objDelaRespuesta->elToken=$token;
+				}
 			}  
 		}		  
 		if($objDelaRespuesta->respuesta!="")

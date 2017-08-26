@@ -71,12 +71,15 @@ class usuario
 			$consulta =$objetoAccesoDato->RetornarConsulta("
 				update usuarios
 				set nombre=:nombre,
-			    tipo=:tipo
+				tipo=:tipo,
+				password=:pass
 				
 				WHERE id=:id");
 			$consulta->bindValue(':id',$this->id, PDO::PARAM_INT);
 			$consulta->bindValue(':nombre',$this->nombre, PDO::PARAM_INT);
 			$consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
+			$consulta->bindValue(':pass', $this->pass, PDO::PARAM_STR);
+			
 	
 			return $consulta->execute();
 	 }
